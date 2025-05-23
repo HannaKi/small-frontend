@@ -5,6 +5,7 @@ from dash import dcc, html, Input, Output, callback
 import dash_leaflet as dl
 import dash_bootstrap_components as dbc
 import requests
+from dash_extensions.javascript import assign
 
 
 dash.register_page(
@@ -18,6 +19,20 @@ route_dropdown_options = [{"label": region, "value": region} for region in route
 
 dir_options = sorted({f["properties"]["dir"] for f in geojson_data["features"]})
 dir_dropdown_options = [{"label": region, "value": region} for region in dir_options]
+
+# JavaScript function to modify the dash-leaflet map
+draw_point=assign(
+    """function(feature, latlng) {
+        return L.circleMarker(latlng, {
+            radius: 6,
+            fillColor: "#3388ff",
+            color: "#fff",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.9
+            });
+        }
+    """)
 
 controls = dbc.Card(
     [
@@ -53,7 +68,18 @@ layout = dbc.Container(
                 dbc.Col(dl.Map(
                                
                                zoom=10, center=[60.2, 24.9], 
-                               children=[dl.TileLayer(), dl.GeoJSON(id="geojson-layer-fast", zoomToBounds=True,)], style={"width": "100%", "height": "500px", "margin": "auto"})),
+                               children=
+                                    [
+                                        dl.TileLayer(), 
+                                        dl.GeoJSON(
+                                            id="geojson-layer-fast", 
+                                            zoomToBounds=True,
+                                            pointToLayer=draw_point,
+                                            )
+                                    ], 
+                                style={"width": "100%", "height": "500px", "margin": "auto"}
+                        )
+                ),
             ],
         ),
     ],
