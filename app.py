@@ -6,7 +6,7 @@ from dash import html
 app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP],
-    title='Hieno analyysityökalu',
+    title='Sample app',
     use_pages=True,
 )
 
@@ -16,7 +16,7 @@ nav = dbc.Nav(
     [
         dbc.NavItem(dbc.NavLink("Boxplot", active="exact", href="/")),
         # dbc.NavItem(dbc.NavLink("Slow Map", active="exact", href="/map")),
-        dbc.NavItem(dbc.NavLink("Fast Map", active="exact", href="/fastmap")),
+        dbc.NavItem(dbc.NavLink("Fancy Map", active="exact", href="/fastmap")),
         # dbc.NavItem(dbc.NavLink("Placeholder 2", active="exact", href="/testi")),
     ],
     pills=True,
@@ -27,7 +27,7 @@ nav = dbc.Nav(
 
 app.layout = dbc.Container(
     [
-        html.H1("Tosi hieno käyttis"),
+        html.H1("Neat UI"),
         html.Hr(),
         nav,
         dash.page_container,
